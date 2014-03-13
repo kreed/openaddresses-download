@@ -20,7 +20,6 @@
   "author": "",
   "license": "PD",
   "dependencies": {
-    "underscore": "~1.6.0",
     "minimist": "0.0.8",
     "ftp": "~0.3.6",
     "request": "~2.34.0",
