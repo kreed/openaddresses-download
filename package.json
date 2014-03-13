@@ -1,6 +1,6 @@
 {
   "name": "openaddresses-download",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "download addresses from the open addresses project",
   "main": "index.js",
   "scripts": {
