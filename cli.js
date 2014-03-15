@@ -18,7 +18,7 @@ if (!parsed.data) {
     throw new Error('no data included in source');
 }
 
-var type = connectors.byAddress(parsed.data);
+var type = parsed.type;
 
 if (!type) {
     throw new Error('no connector found');
