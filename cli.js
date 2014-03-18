@@ -18,14 +18,14 @@ if (!parsed.data) {
     throw new Error('no data included in source');
 }
 
-var type = connectors.byAddress(parsed.data);
+var connector = connectors[parsed.type];
 
-if (!type) {
+if (!connector) {
     throw new Error('no connector found');
 }
 
-connectors[type](parsed, function(err, stream) {
-    if (!argv.silent) showProgress(stream, type);
+connector(parsed, function(err, stream) {
+    if (!argv.silent) showProgress(stream, parsed.type);
     stream.pipe(fs.createWriteStream(output));
 });
 
