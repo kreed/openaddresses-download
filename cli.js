@@ -50,7 +50,16 @@ function showProgress(stream, type) {
                 total: len
             });
         });
-    }
+    } else if (type == 'ESRI') {
+        stream.on('response', function(res) {
+            var len = parseInt(res.headers['content-length'], 10);
+            bar = new ProgressBar('  downloading [:bar] :percent :etas', {
+                complete: '=',
+                incomplete: ' ',
+                width: 20,
+                total: len
+            });
+        });
     stream.on('data', function(chunk) {
         if (bar) bar.tick(chunk.length);
     }).on('end', function() {
