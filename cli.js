@@ -25,8 +25,24 @@ if (!connector) {
 }
 
 connector(parsed, function(err, stream) {
-    if (!argv.silent) showProgress(stream, parsed.type);
-    stream.pipe(fs.createWriteStream(output));
+    if (!argv.silent && parsed.type != "ESRI") showProgress(stream, parsed.type);
+    if (parsed.type != "ESRI")
+        stream.pipe(fs.createWriteStream(output));
+    else {
+        console.log("Progress Bar Disabled for ESRI Source - Please Be Patient");
+        var addrCount = 0;
+        
+        stream.on('data', function(){
+            process.stdout.write('Downloaded: ' + ++addrCount + " addresses\r");
+        });
+
+        stream.on ('close', function(){
+            console.log("");
+        });
+        stream.pipe(fs.createWriteStream(output));
+
+        
+    }
 });
 
 function showProgress(stream, type) {
@@ -50,16 +66,7 @@ function showProgress(stream, type) {
                 total: len
             });
         });
-    } else if (type == 'ESRI') {
-        stream.on('response', function(res) {
-            var len = parseInt(res.headers['content-length'], 10);
-            bar = new ProgressBar('  downloading [:bar] :percent :etas', {
-                complete: '=',
-                incomplete: ' ',
-                width: 20,
-                total: len
-            });
-        });
+    }
     stream.on('data', function(chunk) {
         if (bar) bar.tick(chunk.length);
     }).on('end', function() {
